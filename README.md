@@ -31,7 +31,7 @@ The description of the structure and extra information about each _resource_ sto
 
 | Field       | Data Type | Metadata                                                                                         |
 | ----------- | --------- | ------------------------------------------------------------------------------------------------ |
-| id          | number    | no need to provide it when creating posts, the database will automatically generate it.          |
+| id          | number    | no need to provide it when creating actions, the database will automatically generate it.        |
 | project_id  | number    | required, must be the id of an existing project.                                                 |
 | description | string    | up to 128 characters long, required.                                                             |
 | notes       | string    | no size limit, required. Used to record additional notes or requirements to complete the action. |
@@ -93,7 +93,7 @@ Your finished project must include all of the following requirements:
 
 - [ ] Design and build endpoints for performing CRUD operations on _projects_ and _actions_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
 - [ ] Add an endpoint for retrieving the list of actions for a project.
-- [ ] Use an HTTP client like `postman` or `insomnia` to test the API's endpoints.
+- [ ] Use an HTTP client like `actionman` or `insomnia` to test the API's endpoints.
 - [ ] Use Express Routers to organize the API's code.
 
 In your solution, it is essential that you follow best practices and produce clean and professional results. You will be scored on your adherence to proper code style and good organization. Schedule time to review, refine, and assess your work and perform basic professional polishing including spell-checking and grammar-checking on your work. It is better to submit a challenge that meets MVP than one that attempts too much and does not.
