@@ -10,9 +10,7 @@ router.post("/", validateProject(), (req, res) => {
   res.status(201).json(req.project);
 });
 
-router.post(
-  //                                                                      new action:  proj_id, notes, description
-  "/:id/actions",
+router.post("/:id/actions",                   /// creates list of actions for specific project
   validateProjectId(),
   validateAction(),
   (req, res) => {
@@ -52,7 +50,7 @@ router.get("/:id", validateProjectId(), (req, res) => {
   res.status(200).json(req.project); // attach passed data
 });
 
-router.get("/:id/actions", validateProjectId(), (req, res) => {
+router.get("/:id/actions", validateProjectId(), (req, res) => {    /// lists actions for specific project
   projectDb
     .getProjectActions(req.project.id)
     .then((actions) => {
@@ -130,8 +128,8 @@ function validateProjectId() {
   //  if the `id` parameter is valid, store that project object as `req.project`
   //  if the `id` parameter does not match any project id in the database, cancel the request and respond with status `400` and `{ message: "invalid project id" }`
   return (req, res, next) => {
-    projectDb.getById(req.params.id).then((project) => {
-      if (!project) {
+    projectDb.get(req.params.id).then((project) => {
+      if (!project) {       //
         return res.status(404).json({
           message: "Project not found",
         });
@@ -143,6 +141,9 @@ function validateProjectId() {
         req.project = project;
         next();
       }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error retrieving" });
     });
   };
 }
@@ -191,4 +192,9 @@ function validateAction(req, res, next) {
   };
 }
 
+// module.exports = {
+//   validateAction, 
+//   validateProject, 
+//   validateProjectId
+// };
 module.exports = router;

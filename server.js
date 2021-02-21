@@ -11,7 +11,7 @@ server.use(cors());
 server.use("/api/projects", logger, projectRouter);
 server.use("/api/actions", logger, actionRouter);
 server.get("/", (req, res) => {
-  res.send(`<h2>Hello! I am an API</h2>`);
+  res.send(`<h2>Hello! I am your API</h2>`);
 });
 
 // `logger` logs to the console the following information about each request: request method, request url, and a timestamp

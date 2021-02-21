@@ -61,11 +61,20 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. You might prepare by writing down your own answers before hand.
 
 1. The core features of Node.js and Express and why they are useful.
+#--------node is a platform used to execute js outiside the browser (backend).Express has built-in routers which allow for building & testing modular server API with postman(request,response, next).
 1. Understand and explain the use of Middleware?
+#--------extra protection layer for node for Authentication
 1. The basic principles of the REST architectural style.
+#--------REST uses HTTP methods, an organized method/layout for interaction with external datasource.  layout is as follows
+[HTTP Method: POST
+URL: http//localhost/api       
+{Parameters: caption = {my-great-caption}, user = {cool person}
+Body: image (or text)}
+]
 1. Understand and explain the use of Express Routers.
+#--------An application inside express with routing and middleware. It functions as a handler (listens, matches, callback) for specific enpoints
 1. Describe tooling used to manually test the correctness of an API.
-
+#--------The use of Insomnia or Postman allows for easy testing or endpoints, as well authorization
 You are expected to be able to answer questions in these areas. Your responses contribute to your Sprint Challenge grade.
 
 ## Instructions
@@ -85,16 +94,16 @@ Your finished project must include all of the following requirements:
 
 #### NPM Scripts
 
-- [ ] An _npm script_ named _"server"_ that uses `nodemon`to run the API server.
-- [ ] Use _nodemon_ as a development time dependency only that is not deployed to production.
-- [ ] An _npm script_ named _"start"_ that uses `node` to run the API server.
+- [x] An _npm script_ named _"server"_ that uses `nodemon`to run the API server.
+- [x] Use _nodemon_ as a development time dependency only that is not deployed to production.
+- [x] An _npm script_ named _"start"_ that uses `node` to run the API server.
 
 #### Build an API
 
-- [ ] Design and build endpoints for performing CRUD operations on _projects_ and _actions_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
-- [ ] Add an endpoint for retrieving the list of actions for a project.
-- [ ] Use an HTTP client like `actionman` or `insomnia` to test the API's endpoints.
-- [ ] Use Express Routers to organize the API's code.
+- [1/2] Design and build endpoints for performing CRUD operations on _projects_ and _actions_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
+- [x] Add an endpoint for retrieving the list of actions for a project.
+- [x] Use an HTTP client like `actionman` or `insomnia` to test the API's endpoints.
+- [x] Use Express Routers to organize the API's code.
 
 In your solution, it is essential that you follow best practices and produce clean and professional results. You will be scored on your adherence to proper code style and good organization. Schedule time to review, refine, and assess your work and perform basic professional polishing including spell-checking and grammar-checking on your work. It is better to submit a challenge that meets MVP than one that attempts too much and does not.
 
@@ -102,9 +111,9 @@ In your solution, it is essential that you follow best practices and produce cle
 
 After finishing your required elements, you can push your work further. These goals may or may not be things you have learned in this module but they build on the material you just studied. Time allowing, stretch your limits and see if you can deliver on the following optional goals:
 
-- [ ] Deploy the API to Heroku.
+- [x] Deploy the API to Heroku.
 - [ ] Configure the API to support environment variables.
-- [ ] Use middleware for validation of incoming data.
+- [x] Use middleware for validation of incoming data.
 
 ## Submission format
 

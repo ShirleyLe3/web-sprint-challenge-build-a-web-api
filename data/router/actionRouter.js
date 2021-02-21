@@ -3,23 +3,31 @@ const express = require("express");
 const router = express.Router();
 // const projectDb = require("../helpers/projectModel");
 const actionDb = require("../helpers/actionModel");
+// const {validateAction, validateProject, validateProjectId} = require("./projectRouter");
+
 //-----------------------------------------------------------
-//                  CREATE                                                 new project name & description
+//                  CREATE                                                 
 //-----------------------------------------------------------
-// router.post(
-//   //                                                                      new action:  proj_id, notes, description
-//   "/:id/actions",
-//   validateProjectId(),
-//   validateAction(),
-//   (req, res) => {
+//  new action:  proj_id, notes, description                new project name & description
+
+// router.post("/:id/actions", validateProjectId(), validateAction(), (req, res) => {
 //     actionDb
-//       .insert({ project_id: req.params.id, text: req.body.text })
+//       .insert({
+//       project_id: req.body.project_id,
+//       description: req.body.description,
+//       notes: req.body.notes})
 //       .then((action) => {
 //         res.status(200).json(action); //send back the action   and 201 for success create
 //       })
 //       .catch((error) => res.statuts(500).json({ error: "error" }));
 //   }
 // );
+
+router.post("/", validateProject(), (req, res) => {
+  res.status(201).json(req.project);
+});
+
+
 
 //-----------------------------------------------------------
 //                      READ
@@ -39,6 +47,7 @@ router.get("/", (req, res) => {
       });
     });
 });
+
 
 router.get("/:id", validateActionId(), (req, res) => {
   res.status(200).json(req.action); // attach passed data
@@ -77,13 +86,19 @@ router.delete("/:id", validateActionId(), (req, res) => {
 //-----------------------------------------------------------
 
 router.put("/:id", validateActionId(), (req, res) => {
-  //   const { id } = req.params;
-  //   const changes = req.body;
-  //   if (!changes.id) {
-  //     res.status(400).json({
-  //       message: "Failed to provide id",
-  //     });
-  //   } else {
+    const { id } = req.params;
+    const changes = req.body;
+    if (!changes.id) {
+      res.status(400).json({
+        message: "Failed to provide id",
+      });
+    } else {
+    // if (!req.body.name) {
+    //   res.status(400).json({
+    //     message: "Failed to provide projectname",
+    //   });
+    // } else {
+
   actionDb
     .update(req.params.id, {
       project_id: req.body.project_id,
@@ -98,31 +113,12 @@ router.put("/:id", validateActionId(), (req, res) => {
         error: "Error updating the post",
       });
     });
-});
+  }
+  });
 
 // // CUSTOM MIDDLEWARE
 
 // all endpoints that include an `id` parameter in the url (ex: `/api/projects/:id`)
-
-// function validateAction(req, res, next) {
-//   // if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing action data" }`
-//   //  if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }
-//   return (req, res, next) => {
-//     if (!req.body) {
-//       return res.status(400).json({
-//         message: "Missing project data",
-//       });
-//     } else if (!req.body.description) {
-//       return res.status(400).json({
-//         message: "Missing field",
-//       });
-//     } else {
-//       next();
-//     }
-//   };
-// }
-
-// custom middleware
 
 function validateActionId(req, res, next) {
   // do your magic!
@@ -132,10 +128,10 @@ function validateActionId(req, res, next) {
         return res.status(404).json({
           message: "Action not found",
         });
-        // } else if (!action.id) {
-        //   return res.status(400).json({
-        //     message: "Invalid action ID",
-        //   });
+      } else if (!action.id) {
+           return res.status(400).json({
+          message: "Invalid action ID",
+           });
       } else {
         req.action = action;
         next();
@@ -143,4 +139,74 @@ function validateActionId(req, res, next) {
     });
   };
 }
+
+
+
+
+//custom middleware imported from projectRouter
+
+function validateAction(req, res, next) {
+  // if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing action data" }`
+  //  if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }
+  return (req, res, next) => {
+    if (!req.body) {
+      return res.status(400).json({
+        message: "Missing project data",
+      });
+    } else if (!req.body.description) {
+      return res.status(400).json({
+        message: "Missing field",
+      });
+    } else {
+      next();
+    }
+  };
+}
+
+function validateProjectId() {
+  //  if the `id` parameter is valid, store that project object as `req.project`
+  //  if the `id` parameter does not match any project id in the database, cancel the request and respond with status `400` and `{ message: "invalid project id" }`
+  return (req, res, next) => {
+    projectDb.get(req.params.id).then((project) => {
+      if (!project) {
+        return res.status(404).json({
+          message: "Project not found",
+        });
+      } else if (!project.id) {
+        return res.status(400).json({
+          message: "Invalid project ID",
+        });
+      } else {
+        req.project = project;
+        next();
+      }
+    });
+  };
+}
+function validateProject() {
+  //  if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing project data" }`
+  //  if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
+  return (req, res, next) => {
+    if (!req.body) {
+      return res.status(400).json({
+        message: "Missing project data",
+      });
+      next();
+    } else if (!req.body.name) {
+      return res.status(400).json({
+        message: "Missing field",
+      });
+    } else
+      projectDb
+        .insert(req.body)
+        .then((project) => {
+          req.project = project;
+          next();
+        })
+        .catch((error) => {
+          res.status(500).json({ message: "Error retrieving" });
+        });
+  };
+}
+
 module.exports = router;
